@@ -1,0 +1,32 @@
+{
+  "name": "farmgate-service",
+  "version": "0.0.0",
+  "description": "backend service for farmgate",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && npm run serve",
+    "serve": "node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syedmoiz20/farmgate-service.git"
+  },
+  "author": "moiz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/syedmoiz20/farmgate-service/issues"
+  },
+  "homepage": "https://github.com/syedmoiz20/farmgate-service#readme",
+  "devDependencies": {
+    "@types/node": "^20.4.1",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^7.3.2"
+  }
+}
