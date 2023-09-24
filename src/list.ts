@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import Listing from "./models/Listing.js";
 
 type listingInput = {
@@ -12,20 +11,23 @@ type listingInput = {
   image: Buffer;
 };
 
-const list = (input: listingInput) => {
-  const listing = new Listing(input);
-  console.log(`input within list function:\n ${JSON.stringify(input)}`);
-  listing
+const list = async (input: listingInput) => {
+  const listing = new Listing({
+    ...input,
+    image: Buffer.from(JSON.stringify(input.image))
+  });
+  let status = 0;
+  await listing
     .save()
     .then((listing) => {
-      console.log(`succeeded in listing ${JSON.stringify(listing)}`);
-      return 201;
+      console.log(`good path`);
+      status = 201;
     })
     .catch((error) => {
-      console.error(error);
-      return 400;
+      console.log(error);
+      status = 401;
     });
-  return 400;
+  return status;
 };
 
 export default list;
