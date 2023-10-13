@@ -2,3 +2,6 @@ dist/
 .vscode
 package-lock.json
 node_modules/
+.env
+test/
+coverage/

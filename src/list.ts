@@ -1,4 +1,5 @@
 import Listing from "./models/Listing.js";
+import fs from 'fs';
 
 type listingInput = {
   title: string;
@@ -11,16 +12,21 @@ type listingInput = {
   image: Buffer;
 };
 
-const list = async (input: listingInput) => {
+export const list = async (input: listingInput) => {
+  const imageBuffer = Buffer.from(JSON.stringify(input.image));
   const listing = new Listing({
     ...input,
     image: Buffer.from(JSON.stringify(input.image))
   });
+  fs.writeFile('test/output_beans.jpg', imageBuffer, (err) => {
+    if (err) throw err;
+    console.log('The file has been saved!');
+  });
+  listing.image
   let status = 0;
   await listing
     .save()
-    .then((listing) => {
-      console.log(`good path`);
+    .then((listing: any) => {
       status = 201;
     })
     .catch((error) => {
@@ -30,4 +36,13 @@ const list = async (input: listingInput) => {
   return status;
 };
 
-export default list;
+export const getAllListings = async () => {
+  const listings = await Listing.find({});
+  listings.map((listing) => {
+    return {
+      ...listing,
+      // image: image
+    }
+  })
+  return listings;
+};
