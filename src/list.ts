@@ -13,15 +13,11 @@ type listingInput = {
 };
 
 export const list = async (input: listingInput) => {
-  const imageBuffer = Buffer.from(JSON.stringify(input.image));
   const listing = new Listing({
     ...input,
-    image: Buffer.from(JSON.stringify(input.image))
+    image: Buffer.from(Object.values(input.image))
   });
-  fs.writeFile('test/output_beans.jpg', imageBuffer, (err) => {
-    if (err) throw err;
-    console.log('The file has been saved!');
-  });
+  console.log(`service is uploading this: ${JSON.stringify(listing)}`);
   listing.image
   let status = 0;
   await listing
@@ -38,11 +34,5 @@ export const list = async (input: listingInput) => {
 
 export const getAllListings = async () => {
   const listings = await Listing.find({});
-  listings.map((listing) => {
-    return {
-      ...listing,
-      // image: image
-    }
-  })
   return listings;
 };
