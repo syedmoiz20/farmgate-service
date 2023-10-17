@@ -1,5 +1,5 @@
 import Listing from "./models/Listing.js";
-import Jimp from 'jimp';
+import Jimp from "jimp";
 
 type listingInput = {
   title: string;
@@ -13,7 +13,9 @@ type listingInput = {
 };
 
 export const list = async (input: listingInput) => {
-  const jimpImage = await Jimp.read(Buffer.from(Object.values(input.image))).then((image) => {
+  const jimpImage = await Jimp.read(
+    Buffer.from(Object.values(input.image))
+  ).then((image) => {
     // console.log(`Image size: ${image.getWidth()} x ${image.getHeight()}`);
     return image.resize(400, 600);
   });
@@ -21,7 +23,7 @@ export const list = async (input: listingInput) => {
   const listing = new Listing({
     ...input,
     // image: Buffer.from(Object.values(input.image))
-    image: await jimpImage.getBufferAsync(Jimp.MIME_JPEG)
+    image: await jimpImage.getBufferAsync(Jimp.MIME_JPEG),
   });
   console.log(`service is uploading this: ${JSON.stringify(listing)}`);
   let status = 0;
