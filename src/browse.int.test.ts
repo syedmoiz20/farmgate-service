@@ -12,9 +12,9 @@ beforeAll(async () => {
 
 describe('getAllListings', () => {
   it('should return all listings from MongoDB', async () => {
-    const listings = await getAllListings();
-    expect(listings).toBeDefined(); 
-    expect(listings.length).toBeGreaterThan(0);
+    const { listings, status } = await getAllListings();
+    expect(listings).toBeDefined();
+    expect(status).toEqual(200);
   });
 });
 

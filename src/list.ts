@@ -19,13 +19,11 @@ export const list = async (input: listingInput) => {
     // console.log(`Image size: ${image.getWidth()} x ${image.getHeight()}`);
     return image.resize(400, 600);
   });
-  console.log(`Image size: ${jimpImage.getWidth()} x ${jimpImage.getHeight()}`);
   const listing = new Listing({
     ...input,
     // image: Buffer.from(Object.values(input.image))
     image: await jimpImage.getBufferAsync(Jimp.MIME_JPEG),
   });
-  console.log(`service is uploading this: ${JSON.stringify(listing)}`);
   let status = 0;
   await listing
     .save()
@@ -40,6 +38,20 @@ export const list = async (input: listingInput) => {
 };
 
 export const getAllListings = async () => {
-  const listings = await Listing.find({});
-  return listings;
+  let status: number;
+  const listings = await Listing.find({})
+    .then((listings) => {
+      status = 200;
+      return listings;
+    })
+    .catch((error) => {
+      console.log(error);
+      status = 404;
+      return []
+    });
+  console.log(`listings: ${JSON.stringify(listings)}`)
+  return {
+    status,
+    listings
+  }
 };
