@@ -16,12 +16,10 @@ export const list = async (input: listingInput) => {
   const jimpImage = await Jimp.read(
     Buffer.from(Object.values(input.image))
   ).then((image) => {
-    // console.log(`Image size: ${image.getWidth()} x ${image.getHeight()}`);
     return image.resize(400, 600);
   });
   const listing = new Listing({
     ...input,
-    // image: Buffer.from(Object.values(input.image))
     image: await jimpImage.getBufferAsync(Jimp.MIME_JPEG),
   });
   let status = 0;
@@ -32,7 +30,7 @@ export const list = async (input: listingInput) => {
     })
     .catch((error) => {
       console.log(error);
-      status = 401;
+      status = 400;
     });
   return status;
 };

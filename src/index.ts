@@ -1,5 +1,6 @@
 import express from "express";
 import { getAllListings, list } from "./list.js";
+import { authenticateUser, signup } from "./auth.js";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -34,9 +35,9 @@ const start = async () => {
 start();
 
 app.post("/listings", async (req, res) => {
-  const listStatus = await list(req.body);
-  console.log(`listStatus is ${listStatus}`);
-  res.status(listStatus).send("Listing received!");
+  const status = await list(req.body);
+  console.log(`status is ${status}`);
+  res.status(status).send(~~(status / 100) === 2 ? "Listing received!" : "bad");
 });
 
 app.get("/listings", async (req, res) => {
@@ -44,6 +45,16 @@ app.get("/listings", async (req, res) => {
   res.status(status).json(listings);
 });
 
-app.post("/login", async(req, res) => {
-  
-})
+app.post("/signup", async (req, res) => {
+  const status = await signup(req.body);
+  console.log(`sign up status is ${status}`);
+  res.status(status).send(~~(status / 100) === 2 ? "Account created!" : "bad");
+});
+
+app.get("/auth", async (req, res) => {
+  const authedRes = await authenticateUser(
+    req.body.email,
+    req.body.submittedPassword
+  );
+  res.status(authedRes.status).send(authedRes.authed);
+});
