@@ -52,9 +52,6 @@ app.post("/signup", async (req, res) => {
 });
 
 app.get("/auth", async (req, res) => {
-  const authedRes = await authenticateUser(
-    req.body.email,
-    req.body.submittedPassword
-  );
-  res.status(authedRes.status).send(authedRes.authed);
+  const authedRes = await authenticateUser(req.body.email, req.body.password);
+  res.status(authedRes.status).send(authedRes.authed ? "true" : "false");
 });
